@@ -28,10 +28,6 @@ export class OwnerSearchComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, private searchService: SearchService) {
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
-
   onChangePage(pe: PageEvent) {
     const end = (pe.pageIndex + 1) * this.pageSize;
     const start = pe.pageIndex * this.pageSize;
