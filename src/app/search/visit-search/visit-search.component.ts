@@ -28,10 +28,6 @@ export class VisitSearchComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, private searchService: SearchService) {
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
-
   onChangePage(pe: PageEvent) {
     const end = (pe.pageIndex + 1) * this.pageSize;
     const start = pe.pageIndex * this.pageSize;
@@ -50,7 +46,7 @@ export class VisitSearchComponent implements OnInit {
         this.visits = visits;
         console.log(visits);
         this.length = this.visits.length;
-        const end = 5;
+        const end = 10;
         const start =0;
         this.dataSource = this.visits.slice(start, end);
       },
