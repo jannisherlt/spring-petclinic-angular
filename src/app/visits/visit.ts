@@ -22,7 +22,7 @@
 
 import {Pet} from '../pets/pet';
 import {Vet} from '../vets/vet';
-import {Owner} from "../owners/owner";
+import {Owner} from '../owners/owner';
 
 export interface Visit {
   id: number;

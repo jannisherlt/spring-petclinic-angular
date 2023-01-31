@@ -31,7 +31,7 @@ import {PetTypeService} from '../../pettypes/pettype.service';
 
 import * as moment from 'moment';
 import {OwnerService} from '../../owners/owner.service';
-import {Location} from "@angular/common";
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-pet-edit',
