@@ -1,0 +1,14 @@
+<form class="search-form" >
+  <mat-form-field class="example-full-width">
+    <span matPrefix> </span>
+    <input id="search-bar" type="text" matInput placeholder="Search" [(ngModel)]="search" name="search" (mousedown)="resetEmpty()">
+    <button matSuffix mat-button (click)="clickSearch(search)">
+      <span class="glyphicon glyphicon-search"
+            aria-hidden="true"></span>
+    </button>
+  </mat-form-field>
+</form>
+    <div *ngIf="empty"
+         class="alert alert-danger"> Please enter a term for the
+      search.
+    </div>

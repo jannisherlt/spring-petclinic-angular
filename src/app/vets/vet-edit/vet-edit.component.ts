@@ -20,13 +20,17 @@
  * @author Vitaliy Fedoriv
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Vet} from '../vet';
 import {VetService} from '../vet.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SpecialtyService} from '../../specialties/specialty.service';
 import {Specialty} from '../../specialties/specialty';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Visit} from '../../visits/visit';
+import {VisitService} from '../../visits/visit.service';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-vet-edit',
@@ -34,6 +38,8 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./vet-edit.component.css']
 })
 export class VetEditComponent implements OnInit {
+  @ViewChild(MatPaginator) paginatorPast: MatPaginator;
+  @ViewChild(MatPaginator) paginatorFuture: MatPaginator;
   vetEditForm: FormGroup;
   idCtrl: FormControl;
   firstNameCtrl: FormControl;
@@ -41,12 +47,25 @@ export class VetEditComponent implements OnInit {
   specialtiesCtrl: FormControl;
   vet: Vet;
   specList: Specialty[];
+  visitList: Visit[];
+  pastVisits: Visit[];
+  futureVisits: Visit[];
   errorMessage: string;
+  pageSize: number = 5;
 
-  constructor(private formBuilder: FormBuilder, private specialtyService: SpecialtyService,
-              private vetService: VetService, private route: ActivatedRoute, private router: Router) {
+  futureVisitsData;
+  pastVisitsData;
+
+  pastLength;
+  futureLength;
+
+  constructor(private formBuilder: FormBuilder, private specialtyService: SpecialtyService, private visitService: VisitService,
+              private vetService: VetService, private route: ActivatedRoute, private router: Router, private location: Location) {
     this.vet = {} as Vet;
     this.specList = [] as Specialty[];
+    this.visitList = [] as Visit[];
+    this.pastVisits = [] as Visit[];
+    this.futureVisits = [] as Visit[];
     this.buildForm();
   }
 
@@ -79,7 +98,44 @@ export class VetEditComponent implements OnInit {
     this.specList = this.route.snapshot.data.specs;
     this.vet = this.route.snapshot.data.vet;
     this.vet.specialties = this.route.snapshot.data.vet.specialties;
+    const vetId = this.vet.id.toString();
+    this.visitService.getVisitByVetId(vetId).subscribe(
+      list => {
+        this.visitList = list; console.log(list);
+        for (const visit of list) {
+          if(Date.parse(visit.date) > Date.now()) {
+            this.futureVisits.push(visit);
+          } else {
+            this.pastVisits.push(visit);
+          }
+        }
+        this.pastVisits.sort((a, b) => {return (new Date(b.date).getTime() - new Date(a.date).getTime())});
+        this.futureVisits.sort((a, b) => {return (new Date(a.date).getTime() - new Date(b.date).getTime())});
+        this.pastLength = this.pastVisits.length;
+        this.futureLength = this.futureVisits.length;
+        const end = 5;
+        const start =0;
+        this.pastVisitsData = this.pastVisits.slice(start, end);
+        this.futureVisitsData = this.futureVisits.slice(start, end);
+        },
+      error => this.errorMessage = error as any
+    );
+    this.vet.visits = this.route.snapshot.data.visitList;
+    //this.splitVisitList(this.visitList);
     this.initFormValues();
+    this.pastLength = this.pastVisits.length;
+    this.futureLength= this.futureVisits.length;
+  }
+
+  splitVisitList(visitList: Visit[]) {
+    for (const visit of visitList) {
+        if(Date.parse(visit.date) > Date.now()) {
+          this.futureVisits.push(visit);
+        } else {
+          this.pastVisits.push(visit);
+        }
+    }
+    this.pastVisits = visitList;
   }
 
   onSubmit(vet: Vet) {
@@ -89,11 +145,25 @@ export class VetEditComponent implements OnInit {
         this.gotoVetList();
       },
       error => this.errorMessage = error as any);
-
   }
 
   gotoVetList() {
-    this.router.navigate(['/vets']);
+    this.location.back();
+    //this.router.navigate(['..']);
   }
 
+  onSelect(visit: Visit) {
+    this.router.navigate(['/visits', visit.id,'edit']);
+  }
+
+  onChangePagePast(pe: PageEvent) {
+    const end = (pe.pageIndex + 1) * this.pageSize;
+    const start = pe.pageIndex * this.pageSize;
+    this.pastVisitsData = this.pastVisits.slice(start, end);
+  }
+  onChangePageFuture(pe: PageEvent) {
+    const end = (pe.pageIndex + 1) * this.pageSize;
+    const start = pe.pageIndex * this.pageSize;
+    this.futureVisitsData = this.futureVisits.slice(start, end);
+  }
 }

@@ -15,18 +15,29 @@
  *  * limitations under the License.
  *
  */
+.search-form {
+  color: white;
+}
+.search {
+  color: white;
+}
 
-/**
- * @author Vitaliy Fedoriv
- */
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: white;
+  opacity: 1; /* Firefox */
+}
 
-import {Specialty} from '../specialties/specialty';
-import {Visit} from '../visits/visit';
+::ng-deep  .mat-form-field-label {
+  /*change color of label*/
+  color: white !important;
+}
 
-export interface Vet {
-  id: number;
-  firstName: string;
-  lastName: string;
-  specialties: Specialty[];
-  visits: Visit[];
+::ng-deep.mat-form-field-underline {
+  /*change color of underline*/
+  background-color: white !important;
+}
+
+::ng-deep.mat-form-field-ripple {
+  /*change color of underline when focused*/
+  background-color: white !important;
 }
