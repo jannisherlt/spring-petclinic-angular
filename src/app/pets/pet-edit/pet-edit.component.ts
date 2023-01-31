@@ -31,6 +31,7 @@ import {PetTypeService} from '../../pettypes/pettype.service';
 
 import * as moment from 'moment';
 import {OwnerService} from '../../owners/owner.service';
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-pet-edit',
@@ -48,7 +49,8 @@ export class PetEditComponent implements OnInit {
               private petTypeService: PetTypeService,
               private ownerService: OwnerService,
               private router: Router,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private location: Location) {
     this.pet = {} as Pet;
     this.currentOwner = {} as Owner;
     this.currentType = {} as PetType;
@@ -88,7 +90,11 @@ export class PetEditComponent implements OnInit {
   }
 
   gotoOwnerDetail(owner: Owner) {
-    this.router.navigate(['/owners', owner.id]);
+    this.router.navigate(['/owners', this.currentOwner.id]);
+  }
+
+  goBack() {
+    this.location.back();
   }
 
 }
