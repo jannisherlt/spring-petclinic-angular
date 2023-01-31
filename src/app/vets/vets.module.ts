@@ -31,7 +31,7 @@ import {VetEditComponent} from './vet-edit/vet-edit.component';
 import {VetAddComponent} from './vet-add/vet-add.component';
 import {VetResolver} from './vet-resolver';
 import {VisitsModule} from '../visits/visits.module';
-import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
     imports: [
