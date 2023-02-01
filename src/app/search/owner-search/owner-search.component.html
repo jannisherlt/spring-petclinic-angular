@@ -34,7 +34,7 @@
 
       <tbody>
       <tr *ngFor="let owner of dataSource">
-        <td class="ownerFullName"><a routerLink="/owners/{{owner.id}}" routerLinkActive="active"
+        <td ><a routerLink="/owners/{{owner.id}}" routerLinkActive="active" class="ownerFullName"
                                      (click)="onSelect(owner)">{{ owner.firstName }} {{ owner.lastName }}</a></td>
         <td>{{ owner.address }}</td>
         <td>{{ owner.city }}</td>
