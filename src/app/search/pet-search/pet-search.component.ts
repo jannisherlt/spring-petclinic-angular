@@ -51,7 +51,7 @@ export class PetSearchComponent implements OnInit {
         this.pets = pets;
         console.log(pets);
         this.length = this.pets.length;
-        const end = 5;
+        const end = 10;
         const start = 0;
         this.dataSource = this.pets.slice(start, end);
         for (const pet of pets) {

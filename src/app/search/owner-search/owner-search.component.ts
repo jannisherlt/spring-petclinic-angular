@@ -46,7 +46,7 @@ export class OwnerSearchComponent implements OnInit {
         this.owners = owners;
         console.log(owners);
         this.length = this.owners.length;
-        const end = 5;
+        const end = 10;
         const start =0;
         this.dataSource = this.owners.slice(start, end);
       },
