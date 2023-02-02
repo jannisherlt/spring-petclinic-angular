@@ -20,7 +20,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Vet} from '../vet';
 import {VetService} from '../vet.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -53,8 +53,8 @@ export class VetEditComponent implements OnInit {
   errorMessage: string;
   pageSize: number = 5;
 
-  futureVisitsData;
-  pastVisitsData;
+  @Input() futureVisitsData;
+  @Input() pastVisitsData;
 
   pastLength;
   futureLength;
@@ -94,6 +94,10 @@ export class VetEditComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.pastVisits = [];
+    this.futureVisits = [];
+    this.pastVisitsData = [];
+    this.futureVisitsData = [];
     // we use SpecResolver and VetResolver (get data before init component)
     this.specList = this.route.snapshot.data.specs;
     this.vet = this.route.snapshot.data.vet;
@@ -138,7 +142,7 @@ export class VetEditComponent implements OnInit {
     this.pastVisits = visitList;
   }
 
-  onSubmit(vet: Vet) {
+  saveVet(vet: Vet) {
     this.vetService.updateVet(vet.id.toString(), vet).subscribe(
       res => {
         console.log('update success');
@@ -149,7 +153,6 @@ export class VetEditComponent implements OnInit {
 
   gotoVetList() {
     this.location.back();
-    //this.router.navigate(['..']);
   }
 
   onSelect(visit: Visit) {
@@ -165,5 +168,26 @@ export class VetEditComponent implements OnInit {
     const end = (pe.pageIndex + 1) * this.pageSize;
     const start = pe.pageIndex * this.pageSize;
     this.futureVisitsData = this.futureVisits.slice(start, end);
+  }
+
+  deleteVisit(visit: Visit) {
+    if(confirm('Do you want to delete this visit?')) {
+      this.visitService.deleteVisit(visit.id.toString()).subscribe(
+        response => {
+          if(this.futureVisits.indexOf(visit) !== -1) {
+            this.futureVisits.splice(this.futureVisits.indexOf(visit), 1);
+            this.futureVisitsData.splice(this.futureVisitsData.indexOf(visit), 1);
+            console.log(this.futureVisits);
+          } else if (this.pastVisits.indexOf(visit) !== -1) {
+            this.pastVisits.splice(this.pastVisits.indexOf(visit), 1);
+            this.futureVisitsData.splice(this.futureVisitsData.indexOf(visit), 1);
+            console.log(this.pastVisits);
+          }
+          this.ngOnInit();
+          console.log('delete success');
+
+        },
+        error => this.errorMessage = error as any);
+    }
   }
 }

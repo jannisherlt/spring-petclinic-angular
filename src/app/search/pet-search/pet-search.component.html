@@ -34,10 +34,10 @@
 
         <tbody>
         <tr *ngFor="let pet of dataSource">
-          <td (click)="onSelect(pet.id)"><a routerLink="/pets/{{pet.id}}/edit" routerLinkActive="active">{{ pet.name }}</a></td>
+          <td><a (click)="onSelect(pet)" class="PetSearchSelect" routerLink="/pets/{{pet.id}}/edit" routerLinkActive="active">{{ pet.name }}</a></td>
           <td>{{ pet.type.name }}</td>
           <td>{{ pet.birthDate }}</td>
-          <td (click)="goToOwner(pet.ownerId)"><a routerLinkActive="active" routerLink="/owners/{{pet.ownerId}}">go to Owner</a></td>
+          <td (click)="goToOwner(pet.ownerId)"><a routerLinkActive="active" routerLink="/owners/{{pet.ownerId}}">{{pet.owner?.firstName}} {{pet.owner?.lastName}}</a></td>
         </tbody>
       </table>
       <mat-paginator #paginator [length]="length"

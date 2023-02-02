@@ -46,7 +46,7 @@ export class VetSearchComponent implements OnInit {
         this.vets = vets;
         console.log(vets);
         this.length = this.vets.length;
-        const end = 5;
+        const end = 10;
         const start =0;
         this.dataSource = this.vets.slice(start, end);
       },
