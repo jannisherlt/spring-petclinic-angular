@@ -22,6 +22,7 @@
 
 import {Pet} from '../pets/pet';
 import {Vet} from '../vets/vet';
+import {Owner} from '../owners/owner';
 
 export interface Visit {
   id: number;
@@ -31,4 +32,5 @@ export interface Visit {
   petId?: number;
   vet: Vet;
   vetId: number;
+  owner?: Owner;
 }

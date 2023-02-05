@@ -27,6 +27,8 @@
       <tr>
         <th>Date</th>
         <th>Description</th>
+        <th>Owner</th>
+        <th>Vet</th>
         <th></th>
         <th></th>
       </tr>
@@ -34,13 +36,20 @@
       <tbody>
       <tr *ngFor="let visit of dataSource">
         <td>
-          {{ visit.date }}
+          {{ visit?.date }}
         </td>
         <td>
-          {{visit.description}}
+          {{visit?.description}}
+        </td>
+        <td>
+          {{visit.owner?.firstName}} {{visit.owner?.lastName}}
+        </td>
+        <td>
+          {{visit.vet?.firstName}} {{visit.vet?.lastName}}
         </td>
         <td>
           <button class="btn btn-default" (click)="onSelect(visit)">Edit Visit</button>
+          <button class="btn btn-default" button="button" (click)="deleteVisit(visit)">Delete Visit</button>
         </td>
       </tr>
       </tbody>

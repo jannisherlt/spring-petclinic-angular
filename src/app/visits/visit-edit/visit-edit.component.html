@@ -70,7 +70,8 @@
         <div class="col-sm-offset-2 col-sm-10">
           <input type="hidden" name="id" id="id" [(ngModel)]="visit.id"/>
           <input type="hidden" name="pet" id="pet" [(ngModel)]="visit.pet"/>
-          <button class="btn btn-default" type="button" (click)="gotoOwnerDetail()">Back</button>
+          <button class="btn btn-default" type="button" (click)="goBack()">< Back</button>
+          <button class="btn btn-default" type="button" (click)="gotoOwnerDetail()">go to Owner Detail</button>
           <button class="btn btn-default" type="submit">Update Visit</button>
         </div>
       </div>

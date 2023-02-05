@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {SearchService} from '../search.service';
 import {Pet} from '../../pets/pet';
 import {environment} from '../../../environments/environment';
+import {OwnerService} from '../../owners/owner.service';
 
 @Component({
   selector: 'app-pet-search',
@@ -25,8 +26,12 @@ export class PetSearchComponent implements OnInit {
 
   dataSource;
 
-  constructor(private router: Router, private route: ActivatedRoute, private searchService: SearchService) {
+
+
+  constructor(private router: Router, private route: ActivatedRoute, private searchService: SearchService, private ownerService: OwnerService) {
+    this.pets = [];
   }
+
 
   onChangePage(pe: PageEvent) {
     const end = (pe.pageIndex + 1) * this.pageSize;
@@ -46,9 +51,16 @@ export class PetSearchComponent implements OnInit {
         this.pets = pets;
         console.log(pets);
         this.length = this.pets.length;
-        const end = 5;
-        const start =0;
+        const end = 10;
+        const start = 0;
         this.dataSource = this.pets.slice(start, end);
+        for (const pet of pets) {
+          this.ownerService.getOwnerById(pet.ownerId).subscribe(
+            owner => {
+              pet.owner = owner;
+            }
+          );
+        }
       },
       error => this.errorMessage = error as any);
   }
@@ -60,6 +72,7 @@ export class PetSearchComponent implements OnInit {
   goToOwner(ownerId: number) {
     this.router.navigate(['/owners', ownerId]);
   }
+
   pageEvent: PageEvent;
 
 }

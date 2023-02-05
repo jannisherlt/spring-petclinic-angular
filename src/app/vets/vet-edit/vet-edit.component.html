@@ -19,7 +19,7 @@
 <div class="container-fluid">
   <div class="container xd-container">
     <h2>Edit Veterinarian</h2>
-    <form id="vet_form" class="form-horizontal" (ngSubmit)="onSubmit(vetEditForm.value)" [formGroup]="vetEditForm">
+    <form id="vet_form" class="form-horizontal" (ngSubmit)="saveVet(vetEditForm.value)" [formGroup]="vetEditForm">
       <div class="form-group" hidden="true">
         <input type="text" hidden="true" class="form-control" id="id" name="id" formControlName="id"/>
       </div>
@@ -85,7 +85,10 @@
                   {{visit.description}}
                 </td>
                 <td>
-                  <button class="btn btn-default" (click)="onSelect(visit)">Edit Visit</button>
+                  <button class="btn btn-default" type="button" (click)="onSelect(visit)">Edit Visit</button>
+                </td>
+                <td>
+                  <button class="btn btn-default" type="button" (click)="deleteVisit(visit)">Delete Visit</button>
                 </td>
               </tr>
               </tbody>
@@ -123,7 +126,10 @@
                   {{visit.description}}
                 </td>
                 <td>
-                  <button class="btn btn-default" (click)="onSelect(visit)">Edit Visit</button>
+                  <button class="btn btn-default" type="button" (click)="onSelect(visit)">Edit Visit</button>
+                </td>
+                <td>
+                  <button class="btn btn-default" type="button" (click)="deleteVisit(visit)">Delete Visit</button>
                 </td>
               </tr>
               </tbody>

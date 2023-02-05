@@ -4,6 +4,10 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {SearchService} from '../search.service';
 import {Visit} from '../../visits/visit';
 import {environment} from '../../../environments/environment';
+import {PetService} from '../../pets/pet.service';
+import {VetService} from '../../vets/vet.service';
+import {OwnerService} from '../../owners/owner.service';
+import {VisitService} from '../../visits/visit.service';
 
 @Component({
   selector: 'app-visit-search',
@@ -25,7 +29,10 @@ export class VisitSearchComponent implements OnInit {
 
   dataSource;
 
-  constructor(private router: Router, private route: ActivatedRoute, private searchService: SearchService) {
+
+
+  constructor(private router: Router, private route: ActivatedRoute, private searchService: SearchService, private petService: PetService,
+              private vetService: VetService, private ownerService: OwnerService, private visitService: VisitService) {
   }
 
   onChangePage(pe: PageEvent) {
@@ -38,6 +45,7 @@ export class VisitSearchComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.visits = [];
     this.route.queryParams.subscribe(params => {
       this.keywords = params['search'];
     });
@@ -49,6 +57,21 @@ export class VisitSearchComponent implements OnInit {
         const end = 10;
         const start =0;
         this.dataSource = this.visits.slice(start, end);
+        for (const visit of visits) {
+          this.petService.getPetById(visit.petId).subscribe(
+            pet => {
+              this.ownerService.getOwnerById(pet.ownerId).subscribe(
+                owner => {
+                  visit.owner = owner;
+                }
+              )
+              visit.pet = pet;
+            });
+          this.vetService.getVetById(visit.vetId.toString()).subscribe(
+            vet => {
+              visit.vet = vet;
+            });
+        }
       },
       error => this.errorMessage = error as any);
 
@@ -57,5 +80,22 @@ export class VisitSearchComponent implements OnInit {
   onSelect(visit: Visit) {
     this.router.navigate(['/visits', visit.id,'edit']);
   }
+
+  deleteVisit(visit: Visit) {
+    if(confirm('Do you want to delete this visit?')) {
+      this.visitService.deleteVisit(visit.id.toString()).subscribe(
+        response => {
+
+          this.visits.splice(this.visits.indexOf(visit), 1);
+          if(this.visits.length === 0) {
+            this.dataSource = [];
+          }
+          this.ngOnInit();
+          console.log('delete success');
+        },
+        error => this.errorMessage = error as any);
+    }
+  }
+
 
 }
