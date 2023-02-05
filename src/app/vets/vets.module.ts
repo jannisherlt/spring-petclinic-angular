@@ -30,15 +30,19 @@ import {VetsRoutingModule} from './vets-routing.module';
 import {VetEditComponent} from './vet-edit/vet-edit.component';
 import {VetAddComponent} from './vet-add/vet-add.component';
 import {VetResolver} from './vet-resolver';
+import {VisitsModule} from '../visits/visits.module';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatSelectModule,
-    VetsRoutingModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatSelectModule,
+        VetsRoutingModule,
+        VisitsModule,
+        MatPaginatorModule
+    ],
   declarations: [
     VetListComponent,
     VetEditComponent,

@@ -31,6 +31,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import * as moment from 'moment';
 import {OwnerService} from '../../owners/owner.service';
 import {PetService} from '../../pets/pet.service';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-visit-edit',
@@ -49,7 +50,8 @@ export class VisitEditComponent implements OnInit {
               private petService: PetService,
               private ownerService: OwnerService,
               private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private location: Location) {
     this.visit = {} as Visit;
     this.currentPet = {} as Pet;
     this.currentOwner = {} as Owner;
@@ -91,5 +93,7 @@ export class VisitEditComponent implements OnInit {
   gotoOwnerDetail() {
     this.router.navigate(['/owners', this.currentOwner.id]);
   }
-
+  goBack() {
+    this.location.back();
+  }
 }
