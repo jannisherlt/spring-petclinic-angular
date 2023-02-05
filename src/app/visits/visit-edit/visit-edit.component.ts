@@ -31,7 +31,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import * as moment from 'moment';
 import {OwnerService} from '../../owners/owner.service';
 import {PetService} from '../../pets/pet.service';
-import {Location} from "@angular/common";
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-visit-edit',
